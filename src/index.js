@@ -69,11 +69,17 @@ export default class extends Controller {
   }
 
   openMenu(menu) {
-    menu.parentNode.classList.add('st-menu--opened');
+    let item = menu.parentNode;
+    if (item && this.element.contains(item)) {
+      item.classList.add('st-menu--opened');
+    }
   }
 
   closeMenu(menu) {
-    menu.parentNode.classList.remove('st-menu--opened');
+    let item = menu.parentNode;
+    if (item && this.element.contains(item)) {
+      item.classList.remove('st-menu--opened');
+    }
   }
 
   findAscMenus(item) {
