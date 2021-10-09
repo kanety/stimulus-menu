@@ -14,18 +14,19 @@ export default class extends Controller {
   ];
 
   get menus() {
-    return Array.from(this.element.querySelectorAll('ul'));
+    return this.scope.findAllElements('ul');
   }
 
   get isActive() {
-    return this.element.querySelector('.st-menu--opened') != null;
+    return this.scope.findElement('.st-menu--opened') != null;
   }
 
   toggle(e) {
     let item = e.target.closest('li');
     if (this.hasMenu(item)) {
       if (this.isOpened(item)) {
-        this.closeMenu(item.querySelector('ul'));
+        let menu = Array.from(item.children).find(child => child.matches('ul'));
+        this.closeMenu(menu);
       } else {
         this.openMenus(item);
       }
