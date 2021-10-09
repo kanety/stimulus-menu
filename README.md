@@ -12,7 +12,9 @@ Install from npm:
 
     $ npm install @kanety/stimulus-menu --save
 
-## Basic usage
+## Usage
+
+Register controller:
 
 ```javascript
 import { Application } from '@hotwired/stimulus';
