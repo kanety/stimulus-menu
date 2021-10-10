@@ -13,7 +13,6 @@
   </script>
   <script type="module">
     import { Application, Controller } from '@hotwired/stimulus';
-    import '@kanety/stimulus-static-actions';
     import MenuController from '@kanety/stimulus-menu';
     const application = Application.start();
     application.register('menu', MenuController);
@@ -21,7 +20,7 @@
   <link rel="stylesheet" href="/dist/index.css"></link>
 </head>
 <body>
-  <h1>Basic use</h1>
+  <h1>Auto open</h1>
   <ul class="st-menu st-menu--horizontal" data-controller="menu" data-menu-auto-open-value="true">
     <li>
       <span class="st-menu__icon"><a href="#Menu1">Root Menu1</a></span>
