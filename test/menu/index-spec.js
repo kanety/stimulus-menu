@@ -1,9 +1,3 @@
-import { Application } from '@hotwired/stimulus';
-import MenuController from 'index';
-
-const application = Application.start();
-application.register('menu', MenuController);
-
 describe('index', () => {
   beforeEach(() => {
     document.body.innerHTML = `

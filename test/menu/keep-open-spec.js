@@ -1,10 +1,4 @@
-import { Application } from '@hotwired/stimulus';
-import MenuController from 'index';
-
-const application = Application.start();
-application.register('menu', MenuController);
-
-describe('index', () => {
+describe('keep-open', () => {
   beforeEach(() => {
     document.body.innerHTML = `
       <ul data-controller="menu" data-menu-keep-open-value="true">
