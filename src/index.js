@@ -23,7 +23,7 @@ export default class extends Controller {
 
   toggle(e) {
     let item = e.target.closest('li');
-    if (this.hasMenu(item)) {
+    if (item && this.hasMenu(item)) {
       if (this.isOpened(item)) {
         let menu = Array.from(item.children).find(child => child.matches('ul'));
         this.closeMenu(menu);
