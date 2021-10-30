@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.3
+
+* Fix error when clicked root element.
+
 ## 1.0.2
 
 * Fix query scope.
