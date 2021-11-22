@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.4
+
+* Move focus when menu is opened.
+
 ## 1.0.3
 
 * Fix error when clicked root element.
