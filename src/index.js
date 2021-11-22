@@ -29,6 +29,7 @@ export default class extends Controller {
         this.closeMenu(menu);
       } else {
         this.openMenus(item);
+        e.target.focus();
       }
       e.preventDefault();
     } else {
@@ -41,7 +42,10 @@ export default class extends Controller {
   open(e) {
     let item = e.target.closest('li');
     if (item && this.hasMenu(item)) {
-      if (this.isActive || this.autoOpenValue) this.openMenus(item);
+      if (this.isActive || this.autoOpenValue) {
+        this.openMenus(item);
+        e.target.focus();
+      }
       e.preventDefault();
     }
   }
