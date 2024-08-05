@@ -64,6 +64,16 @@ export default class extends Controller {
     }
   }
 
+  enable(e) {
+    let targetItem = e.target.closest('li');
+    this.findDescendants(targetItem).forEach(item => this.enableItem(item));
+  }
+
+  disable(e) {
+    let targetItem = e.target.closest('li');
+    this.findDescendants(targetItem).forEach(item => this.disableItem(item));
+  }
+
   isToggleElement(target) {
     return target.matches(this.toggleElementValue);
   }
@@ -106,6 +116,32 @@ export default class extends Controller {
     }
   }
 
+  enableItem(item) {
+    item.classList.remove('st-menu__item--disabled');
+    this.findContents(item).forEach(content => {
+      [content, ...content.querySelectorAll('*')].forEach(elem => {
+        if (elem.matches('a')) {
+          elem.tabIndex = null;
+        } else if (elem.matches('input, textarea, select, button')) {
+          elem.disabled = false;
+        }
+      });
+    });
+  }
+
+  disableItem(item) {
+    item.classList.add('st-menu__item--disabled');
+    this.findContents(item).forEach(content => {
+      [content, ...content.querySelectorAll('*')].forEach(elem => {
+        if (elem.matches('a')) {
+          elem.tabIndex = '-1';
+        } else if (elem.matches('input, textarea, select, button')) {
+          elem.disabled = true;
+        }
+      });
+    });
+  }
+
   findChildMenus(item) {
     return Array.from(item.children).filter(child => child.matches('ul'));
   }
@@ -127,5 +163,9 @@ export default class extends Controller {
     return this.findChildMenus(item).flatMap(menu => {
       return Array.from(menu.children).filter(child => child.matches('li'));
     });
+  }
+
+  findContents(item) {
+    return Array.from(item.children).filter(child => !child.matches('ul'));
   }
 }

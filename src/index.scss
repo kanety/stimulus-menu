@@ -18,6 +18,9 @@
     padding: 0;
     list-style-type: none;
   }
+  li.st-menu__item--disabled {
+    pointer-events: none;
+  }
 
   .st-menu__icon:after {
     content: '▼';
