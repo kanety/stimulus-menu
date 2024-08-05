@@ -13,10 +13,10 @@ describe('keep-open', () => {
               </ul>
             </li>
             <li>
-              <a href="#Menu1-2">Menu1-3</a>
+              <a href="#Menu1-2">Menu1-2</a>
               <ul>
-                <li><a href="#Menu1-2-1">Menu1-3-1</a></li>
-                <li><a href="#Menu1-2-2">Menu1-3-2</a></li>
+                <li><a href="#Menu1-2-1">Menu1-2-1</a></li>
+                <li><a href="#Menu1-2-2">Menu1-2-2</a></li>
               </ul>
             </li>
           </ul>
