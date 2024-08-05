@@ -99,6 +99,31 @@ Keep menu opened after clicking menu items:
 </ul>
 ```
 
+#### toggle-element
+
+You can change toggle element (default is `a`). For example:
+
+```javascript
+<ul data-controller="menu"
+    data-menu-toggle-element-value="button">
+  <li><button type="button">Button</button></li>
+</ul>
+```
+
+### Callbacks
+
+Set callbacks fired when a menu item is opened / closed:
+
+```javascript
+let element = document.querySelector('[data-controller="menu"]');
+element.addEventListener('menu:opened', (e) => {
+  console.log('opened: ' + e.detail.item.querySelector('a').href);
+});
+element.addEventListener('menu:closed', (e) => {
+  console.log('closed: ' + e.detail.item.querySelector('a').href);
+});
+```
+
 ## License
 
 The library is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
