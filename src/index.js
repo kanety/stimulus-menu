@@ -86,12 +86,14 @@ export default class extends Controller {
   openItem(item) {
     if (item && this.isClosed(item) && this.hasMenu(item) && this.element.contains(item)) {
       item.classList.add('st-menu--opened');
+      this.dispatch('opened', { detail: { item: item } });
     }
   }
 
   closeItem(item) {
     if (item && this.isOpened(item) && this.hasMenu(item) && this.element.contains(item)) {
       item.classList.remove('st-menu--opened');
+      this.dispatch('closed', { detail: { item: item } });
     }
   }
 
