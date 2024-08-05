@@ -5,7 +5,8 @@ import './index.scss';
 export default class extends Controller {
   static values = {
     autoOpen: { type: Boolean, default: false },
-    keepOpen: { type: Boolean, default: false }
+    keepOpen: { type: Boolean, default: false },
+    toggleElement: { type: String, default: 'a' }
   };
   static actions = [
     ['element', 'click->toggle'],
@@ -26,6 +27,8 @@ export default class extends Controller {
   }
 
   toggle(e) {
+    if (!this.isToggleElement(e.target)) return;
+
     let item = e.target.closest('li');
     if (item && this.hasMenu(item)) {
       if (this.isOpened(item)) {
@@ -43,6 +46,8 @@ export default class extends Controller {
   }
 
   open(e) {
+    if (!this.isToggleElement(e.target)) return;
+
     let item = e.target.closest('li');
     if (item && this.hasMenu(item)) {
       if (this.isActive || this.autoOpenValue) {
@@ -57,6 +62,10 @@ export default class extends Controller {
     if (!this.element.contains(e.target)) {
       this.closeAllItems();
     }
+  }
+
+  isToggleElement(target) {
+    return target.matches(this.toggleElementValue);
   }
 
   hasMenu(item) {
