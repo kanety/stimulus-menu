@@ -13,28 +13,31 @@ export default class extends Controller {
     ['element', 'mouseover->open']
   ];
 
-  get menus() {
-    return this.scope.findAllElements('ul');
+  get rootItems() {
+    return Array.from(this.element.children).filter(child => child.matches('li'));
+  }
+
+  get items() {
+    return this.rootItems.flatMap(rootItem => this.findDescendants(rootItem));
   }
 
   get isActive() {
-    return this.scope.findElement('.st-menu--opened') != null;
+    return this.items.find(item => this.isOpened(item)) != undefined;
   }
 
   toggle(e) {
     let item = e.target.closest('li');
     if (item && this.hasMenu(item)) {
       if (this.isOpened(item)) {
-        let menus = this.findChildMenus(item);
-        menus.forEach(menu => this.closeMenu(menu));
+        this.closeItem(item);
       } else {
-        this.openMenus(item);
+        this.openItemsFrom(item);
         e.target.focus();
       }
       e.preventDefault();
     } else {
       if (!this.keepOpenValue) {
-        this.closeAllMenus();
+        this.closeAllItems();
       }
     }
   }
@@ -43,7 +46,7 @@ export default class extends Controller {
     let item = e.target.closest('li');
     if (item && this.hasMenu(item)) {
       if (this.isActive || this.autoOpenValue) {
-        this.openMenus(item);
+        this.openItemsFrom(item);
         e.target.focus();
       }
       e.preventDefault();
@@ -52,7 +55,7 @@ export default class extends Controller {
 
   closeAll(e) {
     if (!this.element.contains(e.target)) {
-      this.closeAllMenus();
+      this.closeAllItems();
     }
   }
 
@@ -61,51 +64,57 @@ export default class extends Controller {
   }
 
   isOpened(item) {
-    return item.matches(`.st-menu--opened`);
+    return item.matches('.st-menu--opened');
   }
 
   isClosed(item) {
     return !this.isOpened(item);
   }
 
-  openMenus(item) {
-    let targetMenus = this.findAscMenus(item).concat(this.findChildMenus(item));
-    this.menus.forEach(menu => {
-      if (!targetMenus.includes(menu)) this.closeMenu(menu);
+  openItemsFrom(item) {
+    let targetItems = this.findAscendants(item).concat([item]);
+    this.items.forEach(item => {
+      if (!targetItems.includes(item)) this.closeItem(item);
     });
-    targetMenus.forEach(menu => this.openMenu(menu));
+    targetItems.forEach(item => this.openItem(item));
   }
 
-  closeAllMenus() {
-    this.menus.forEach(menu => this.closeMenu(menu));
+  closeAllItems() {
+    this.items.forEach(item => this.closeItem(item));
   }
 
-  openMenu(menu) {
-    let item = menu.parentNode;
-    if (item && this.isClosed(item) && this.element.contains(item)) {
+  openItem(item) {
+    if (item && this.isClosed(item) && this.hasMenu(item) && this.element.contains(item)) {
       item.classList.add('st-menu--opened');
     }
   }
 
-  closeMenu(menu) {
-    let item = menu.parentNode;
-    if (item && this.isOpened(item) && this.element.contains(item)) {
+  closeItem(item) {
+    if (item && this.isOpened(item) && this.hasMenu(item) && this.element.contains(item)) {
       item.classList.remove('st-menu--opened');
-    }
-  }
-
-  findAscMenus(item) {
-    let menu = item.parentNode;
-    if (menu == this.element) {
-      return [menu];
-    } else if (menu && menu.parentNode) {
-      return this.findAscMenus(menu.parentNode).concat([menu]);
-    } else {
-      return [];
     }
   }
 
   findChildMenus(item) {
     return Array.from(item.children).filter(child => child.matches('ul'));
+  }
+
+  findAscendants(item) {
+    let parent = item.parentNode?.parentNode;
+    if (parent && this.scope.containsElement(parent)) {
+      return this.findAscendants(parent).concat([item]);
+    } else {
+      return [item];
+    }
+  }
+
+  findDescendants(item) {
+    return [item].concat(this.findChildren(item).flatMap(child => this.findDescendants(child)));
+  }
+
+  findChildren(item) {
+    return this.findChildMenus(item).flatMap(menu => {
+      return Array.from(menu.children).filter(child => child.matches('li'));
+    });
   }
 }
