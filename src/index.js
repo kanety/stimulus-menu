@@ -25,8 +25,8 @@ export default class extends Controller {
     let item = e.target.closest('li');
     if (item && this.hasMenu(item)) {
       if (this.isOpened(item)) {
-        let menu = Array.from(item.children).find(child => child.matches('ul'));
-        this.closeMenu(menu);
+        let menus = this.findChildMenus(item);
+        menus.forEach(menu => this.closeMenu(menu));
       } else {
         this.openMenus(item);
         e.target.focus();
@@ -57,16 +57,23 @@ export default class extends Controller {
   }
 
   hasMenu(item) {
-    return Array.from(item.children).some(child => child.matches('ul'));
+    return this.findChildMenus(item).length != 0;
   }
 
   isOpened(item) {
     return item.matches(`.st-menu--opened`);
   }
 
+  isClosed(item) {
+    return !this.isOpened(item);
+  }
+
   openMenus(item) {
-    this.closeAllMenus();
-    this.findAscMenus(item).concat(this.findChildMenus(item)).forEach(menu => this.openMenu(menu));
+    let targetMenus = this.findAscMenus(item).concat(this.findChildMenus(item));
+    this.menus.forEach(menu => {
+      if (!targetMenus.includes(menu)) this.closeMenu(menu);
+    });
+    targetMenus.forEach(menu => this.openMenu(menu));
   }
 
   closeAllMenus() {
@@ -75,14 +82,14 @@ export default class extends Controller {
 
   openMenu(menu) {
     let item = menu.parentNode;
-    if (item && this.element.contains(item)) {
+    if (item && this.isClosed(item) && this.element.contains(item)) {
       item.classList.add('st-menu--opened');
     }
   }
 
   closeMenu(menu) {
     let item = menu.parentNode;
-    if (item && this.element.contains(item)) {
+    if (item && this.isOpened(item) && this.element.contains(item)) {
       item.classList.remove('st-menu--opened');
     }
   }
