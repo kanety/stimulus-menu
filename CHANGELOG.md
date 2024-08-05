@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.2.0
+
+* Add toggle element option.
+* Add opened/closed callbacks.
+* Add event to enable/disable menu item.
+
 ## 1.1.0
 
 * Move dependencies to peerDependencies.
